@@ -1,0 +1,20 @@
+- rewrite rpc.py code to use some async framework, so we can shut down
+  TCP gracefully.
+- rewrite rpc.py code to use idl compiler on IDL from RFC1831, instead
+  of hand-coded pack/unpack.
+- change pyfs docstring to reST, use a Python docstring -> HTML package
+  instead of the mk_doc hack.
+- Note: many NFS error conditions are caught by client-side code,
+  difficult to test.  Write own client code for testing?
+- design way to handle multiple filesystems (allocate each its
+  own filehandle numbering space, dispatch as needed)
+- for rpcgen, think about using metaclass, compile-time code generation, 
+  instead of compiling .idl file to .py file, then importing.
+- provide general support in srv.py for synthesizing '.' and '..'
+  entries, and escaping genuine '.' and '..' entries from filesystems
+  (possibly by just appending/deleting '..').
+- fix the implementation of directory cookies to be stable across 
+  changes to the directory (see srv.py comments).
+  This bug will result in, e.g., rm -r failing, because rm -r will
+  delete some files, then try to read the rest of a directory, and
+  fail because the directory has changed underneath it.

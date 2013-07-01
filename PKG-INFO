@@ -1,0 +1,13 @@
+Metadata-Version: 1.0
+Name: Pinefs
+Version: 1.1
+Summary: Python NFS server and ONC RPC compiler
+Home-page: http://www.pobox.com/~asl2/software/Pinefs
+Author: Aaron Lav
+Author-email: asl2@pobox.com
+License: X
+Description: Python implementation of NFS v2 server,
+        implementing a simple in-memory filesystem, a filesystem view
+        of the Python namespace, and a tar filesystem.  Includes rpcgen,
+        an IDL compiler.
+Platform: Any Python 2.2 or later

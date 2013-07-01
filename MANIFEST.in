@@ -1,0 +1,11 @@
+include CHANGELOG
+include TODO
+include MANIFEST.in
+include README.html
+include pyfs.html
+include rpcgen.html
+include vers.py
+include do_mount
+graft server
+
+

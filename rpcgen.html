@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<title>
+Pinefs - rpcgen
+</title>
+</head>
+<body>
+<H3>rpcgen</H3>
+<p>
+<pre>
+Parser for ONC RPC IDL.  The grammar is taken from RFC1832, sections
+5, and RFC1831, section 11.2.
+
+The output Python code (which requires rpchelp and rpc from the Pinefs
+distribution) contains a separate class (with rpchelp.Server as a base
+class) for every version defined in every program statement.  To
+implement a service, for each version of each program, derive a class
+from the class named &lt;prog&gt;_&lt;version&gt;, with method names corresponding
+to the procedure names in the IDL you want to implement.  (At
+instantiation, any procedure names defined in the IDL but neither
+implemented nor listed in the deliberately_unimplemented member will
+cause a warning to be printed.)  Also, define a member function
+check_host_ok, which is passed (host name, credentials, verifier) on each
+call, and should return a true value if the call should be accepted,
+and false otherwise.
+
+To use instances of the server class, create a transport server (with
+the create_transport_server(port) function), and then, for every server
+instance you want associated with that port, call its
+register(transport_server) function, which will register with the
+local portmapper.  (This architecture allows multiple versions of
+multiple programs all to listen on the same port, or for a single version
+to listen on, e.g, both a TCP and UDP port.)
+
+Member functions will be passed Python values, and should return
+a Python value.  The correspondence between IDL datatypes and
+Python datatypes is:
+- base types uint, int, float, double are the same
+- void is None
+- an array (either fixed or var-length) is a Python sequence
+- an opaque or a string is a Python string
+- a structure is a Python instance, with IDL member names corresponding
+  to Python attribute names
+- a union is a two-attribute instance, with one attribute named the
+  name of the discriminant declaration, and the other named '_data'
+  (with a value appropriate to the value of the discriminant).
+- an optional value (*) is either None, or the value
+- a linked list is special-cased, and turned into a Python list
+  of structures without the link member.
+- const and enum declarations are top-level constant variables.
+
+IDL identifiers which are Python reserved words (or Python reserved
+words with 1 or more underscores suffixed) are escaped by appending
+an underscore.
+
+Top-level struct and union declarations generate Python declarations
+of the corresponding name, and calling the object bound to the name
+will generate an instance suitable for populating.  (The class defines
+__slots__ to be the member names, and has, as attributes, any nested
+struct or union definitions.  The packing/unpacking function don't
+require the use of this class, and, for the unnamed struct/union
+declarations created by declaring struct or union types as either
+return values or argument types in a procedure definition, you'll need
+to create your own classes, either by using
+rpchelp.struct_union_class_factory, or some other way.)
+
+Enum declarations nested inside struct or union declarations, or
+procedure definitions, generate top-level definitions.  (I think this
+treatment of nested enum definitions is wrong, according to RFC1832
+section 5.4, but I'm not sure.)
+
+Rpcgen doesn't support:
+- 'unsigned' as a synonym for 'unsigned int'
+- case fall-through in unions
+Neither seems to be defined in the grammar, but I should support them,
+and look around for an updated IDL specification.
+
+</pre>
+<p>
+<a href="README.html">Back to Pinefs home page</a>
+</body>
+</html>

@@ -1,0 +1,28 @@
+1.1 2003/06/16
+Add tarfs file system to mount tar files (requires python 2.3's tarfile,
+but rest of code should work without it).
+- change mount code to allow filesystem to support multiple mount points,
+  return multiple file handles
+- add sync code to rpchelp/rpc, since mount server now needs to sync w/ nfs
+  server
+
+
+1.01 2003/06/09
+
+Since pyfs fileids and filehandles aren't persistent across restarts,
+fix to have a random starting point (recognize stale file handles,
+return ESTALE
+
+Fix rpcgen to raise instances, not class + args syntax (rpc still needs
+fixing)
+
+Add graceful shutdown code for UDP.  (For TCP, I'd need to restructure
+the code to use select (): let me know if this is an issue.)
+
+Discard packets which are too short, instead of throwing an exception
+and breaking out of receive loop.
+
+Fix to allow -t on command line to specify TCP.
+
+
+1.0 - Initial release
