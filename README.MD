@@ -1,9 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
-<title>
-Pinefs
-</title>
+  <h1>Pinefs</h1>
 </head>
 <body>
 <H3>Introduction</H3>
